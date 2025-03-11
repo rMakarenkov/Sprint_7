@@ -1,42 +1,45 @@
 import json
 import allure
 import pytest
-import credentials
+import urls
+import copy
 
-from helper import Helper
+from api_client import ApiClient
+from data.test_data import CourierData
 
 
 @allure.feature('Сценарии создания курьера')
 @pytest.mark.create_courier
 class TestCreateCourier:
-    @allure.story('Создание курьера с валидными для регистрации данными. Ожидаемый результат: 201')
+    @allure.title('Создание курьера с валидными для регистрации данными. Ожидаемый результат: 201')
     def test_create_courier_complete_data_success_201(self, create_new_user_and_return_login_password):
         # Arrange
         # Act
         response_by_create_courier = create_new_user_and_return_login_password
         # Assert
         assert response_by_create_courier.status_code == 201
-        assert response_by_create_courier.json() == {'ok': True}
+        assert response_by_create_courier.json() == CourierData.valid_response
 
-    @allure.story('Создание дублирующей сущности курьера. Ожидаемый результат: 409')
+    @allure.title('Создание дублирующей сущности курьера. Ожидаемый результат: 409')
     def test_create_courier_already_created_conflict_409(self, create_new_user_and_return_login_password):
         # Arrange
         response_by_create_courier = create_new_user_and_return_login_password
         data = json.loads(response_by_create_courier.request.body)
         # Act
-        repeated_response = Helper.api_post(url=credentials.COURIER_API, data=data)
+        repeated_response = ApiClient.post(url=urls.COURIER_URL, data=data)
         # Assert
         assert repeated_response.status_code == 409
-        assert repeated_response.json()['message'] == 'Этот логин уже используется'
+        assert repeated_response.json()['message'] == CourierData.login_taken_response
 
-    @allure.story('Создание курьера без одного из обязательных ключей. Ожидаемый результат: 400')
+    @allure.title('Создание курьера без одного из обязательных ключей. Ожидаемый результат: 400')
     @pytest.mark.parametrize('key', ['login', 'password'])
     def test_create_courier_without_required_key_bad_request_400(self, key):
         # Arrange
-        data = Helper.get_json(credentials.create_courier_json_path)
+        data = copy.deepcopy(CourierData.valid_courier)
         data.pop(key)
         # Act
-        response_by_create_courier = Helper.api_post(url=credentials.COURIER_API, data=data)
+        response_by_create_courier = ApiClient.post(url=urls.COURIER_URL, data=data)
+        print(response_by_create_courier.request.body)
         # Assert
         assert response_by_create_courier.status_code == 400
-        assert response_by_create_courier.json()['message'] == 'Недостаточно данных для создания учетной записи'
+        assert response_by_create_courier.json()['message'] == CourierData.missing_data_create_response
