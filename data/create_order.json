@@ -2,7 +2,7 @@
     "firstName": "BaseName",
     "lastName": "BaseLastname",
     "address": "BaseAddress",
-    "metroStation": 4,
+    "metroStation": 1,
     "phone": "+7 800 111 22 33",
     "rentTime": 5,
     "deliveryDate": "2025-03-11",
