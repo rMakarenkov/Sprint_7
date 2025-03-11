@@ -29,7 +29,7 @@ class TestCreateCourier:
         assert repeated_response.status_code == 409
         assert repeated_response.json()['message'] == 'Этот логин уже используется'
 
-    @allure.story('Создание курьера без одного из обязательных ключей - {key}. Ожидаемый результат: 400')
+    @allure.story('Создание курьера без одного из обязательных ключей. Ожидаемый результат: 400')
     @pytest.mark.parametrize('key', ['login', 'password'])
     def test_create_courier_without_required_key_bad_request_400(self, key):
         # Arrange

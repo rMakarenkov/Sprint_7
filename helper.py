@@ -22,15 +22,15 @@ class Helper:
 
     @staticmethod
     @allure.step('Вызываем метод GET c параметрами - {params}, эндпоинт - {url}')
-    def api_get(url: str, params: dict | None):
+    def api_get(url: str, params: dict | None) -> requests.Response:
         return requests.get(url=url, params=params)
 
     @staticmethod
     @allure.step('Вызываем метод POST c данными - {data}, эндпоинт - {url}')
-    def api_post(url: str, data: dict):
+    def api_post(url: str, data: dict) -> requests.Response:
         return requests.post(url=url, json=data)
 
     @staticmethod
     @allure.step('Вызываем метод DELETE, эндпоинт - {url}')
-    def api_delete(url: str):
+    def api_delete(url: str) -> requests.Response:
         return requests.delete(url=url)

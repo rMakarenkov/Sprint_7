@@ -21,7 +21,7 @@ class TestLoginCourier:
         assert response_by_login_courier.status_code == 200
         assert response_by_login_courier.json()['id'] and isinstance(response_by_login_courier.json()['id'], int)
 
-    @allure.story('Авторизация курьера с ошибкой в поле - {key}. Ожидаемый результат: 404')
+    @allure.story('Авторизация курьера с ошибкой в значении ключа login или password. Ожидаемый результат: 404')
     @pytest.mark.parametrize('key', ['login', 'password'])
     def test_login_courier_with_error_in_data_not_found_404(self, create_new_user_and_return_login_password, key):
         # Arrange
@@ -35,7 +35,7 @@ class TestLoginCourier:
         assert response_by_login_courier.status_code == 404
         assert response_by_login_courier.json()['message'] == 'Учетная запись не найдена'
 
-    @allure.story('Авторизация курьера без одного из обязательных ключей - {key}. Ожидаемый результат: 400')
+    @allure.story('Авторизация курьера без одного из обязательных ключей. Ожидаемый результат: 400')
     @pytest.mark.parametrize('key', ['login', 'password'])
     def test_login_courier_without_required_key_bad_request_400(self, key):
         # Arrange

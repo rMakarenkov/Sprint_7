@@ -5,7 +5,7 @@ import credentials
 from helper import Helper
 
 
-@allure.feature('Сценарии создания заказа или получения писка заказов')
+@allure.feature('Сценарии создания заказа или получения списка заказов')
 class TestCreateOrReceivingOrders:
     @pytest.mark.create_order
     @allure.story('Создание заказа с различными значениями ключа color. Ожидаемый результат: 201')
