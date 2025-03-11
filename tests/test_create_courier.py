@@ -39,7 +39,6 @@ class TestCreateCourier:
         data.pop(key)
         # Act
         response_by_create_courier = ApiClient.post(url=urls.COURIER_URL, data=data)
-        print(response_by_create_courier.request.body)
         # Assert
         assert response_by_create_courier.status_code == 400
         assert response_by_create_courier.json()['message'] == CourierData.missing_data_create_response
